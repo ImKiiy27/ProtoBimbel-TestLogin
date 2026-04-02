@@ -46,7 +46,7 @@ class AuthController {
 
       // --- Validasi format email ---
       } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION['flash_error'] = 'Format email tidak valid.';
+        $_SESSION['flash_error'] = 'Email Anda Salah.';
 
       } else {
         // Minta Model untuk cek ke database
