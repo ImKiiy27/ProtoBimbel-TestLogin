@@ -83,14 +83,9 @@ require __DIR__ . '/../layouts/header.php';
             Masuk Sekarang
           </button>
 
-          <div class="divider"><span>atau</span></div>
-
           <div class="social-login">
             <button type="button" class="social-btn google">
               <i class="fab fa-google"></i> Google
-            </button>
-            <button type="button" class="social-btn facebook">
-              <i class="fab fa-facebook-f"></i> Facebook
             </button>
           </div>
 
