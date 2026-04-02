@@ -83,12 +83,6 @@ require __DIR__ . '/../layouts/header.php';
             Masuk Sekarang
           </button>
 
-          <div class="social-login">
-            <button type="button" class="social-btn google">
-              <i class="fab fa-google"></i> Google
-            </button>
-          </div>
-
           <div class="register-link">
             <p>Belum punya akun? <a href="index.php?page=pendaftaran">Daftar Sekarang</a></p>
           </div>
