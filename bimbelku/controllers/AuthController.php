@@ -125,7 +125,7 @@ class AuthController {
 
     // Mulai sesi baru hanya untuk flash message
     session_start();
-    $_SESSION['flash_success'] = 'Anda berhasil logout.';
+    $_SESSION['flash_success'] = 'Anda telah berhasil logout.';
 
     header('Location: index.php?page=login');
     exit;
