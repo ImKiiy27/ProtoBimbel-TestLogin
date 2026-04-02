@@ -76,7 +76,7 @@ class AuthController {
             break;
 
           case 'not_found':
-            $_SESSION['flash_error'] = 'Email tidak terdaftar.';
+            $_SESSION['flash_error'] = 'Email tidak terdaftar di database.';
             break;
 
           default:
