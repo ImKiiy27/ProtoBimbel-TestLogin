@@ -19,7 +19,7 @@ require __DIR__ . '/../layouts/header.php';
 
       <div class="login-illustration">
         <div class="icon-wrapper"><i class="fas fa-graduation-cap"></i></div>
-        <h3>Selamat Datang di BimbelKu</h3>
+        <h3>Selamat Datang Di Bimbel Orion</h3>
         <p>Platform pembelajaran terbaik untuk masa depan cerah Anda</p>
       </div>
 
