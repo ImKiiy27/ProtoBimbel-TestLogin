@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Pendaftaran - BimbelKu';
+$pageTitle = 'Pendaftaran - Bimbel Orion';
 require __DIR__ . '/../layouts/header.php';
 ?>
 
@@ -12,7 +12,7 @@ require __DIR__ . '/../layouts/header.php';
   <div class="container">
     <a class="navbar-brand" href="index.php">
       <div class="logo-icon" style="width:40px;height:40px;font-size:18px;"><i class="fas fa-book-open"></i></div>
-      <span class="brand-text">BimbelKu</span>
+      <span class="brand-text">Bimbel Orion</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -150,11 +150,11 @@ require __DIR__ . '/../layouts/header.php';
               </a>
               <a href="https://instagram.com/bimbelku" class="instagram" target="_blank">
                 <i class="fab fa-instagram" style="color:#e1306c;"></i>
-                @bimbelku
+                @bimbelorion
               </a>
               <a href="mailto:info@bimbelku.com">
                 <i class="fas fa-envelope" style="color:#0d6efd;"></i>
-                info@bimbelku.com
+                info@bimbelorion.com
               </a>
             </div>
 
@@ -172,7 +172,7 @@ require __DIR__ . '/../layouts/header.php';
       <div class="col-lg-4">
         <div class="footer-brand">
           <div class="logo-icon" style="width:45px;height:45px;font-size:20px;"><i class="fas fa-book-open"></i></div>
-          <span class="logo-text">BimbelKu</span>
+          <span class="logo-text">Bimbel Orion</span>
         </div>
         <p style="opacity:0.7;line-height:1.8;">Platform bimbel modern terbaik untuk masa depan cerah anak Anda.</p>
         <div class="social-links">
@@ -209,7 +209,7 @@ require __DIR__ . '/../layouts/header.php';
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 BimbelKu. All rights reserved. Made with <i class="fas fa-heart text-danger"></i> in Indonesia</p>
+      <p>&copy; 2026 Bimbel Orion. All rights reserved. Made with <i class="fas fa-heart text-danger"></i> in Indonesia</p>
     </div>
   </div>
 </footer>
