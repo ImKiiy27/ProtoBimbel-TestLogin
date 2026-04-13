@@ -5,7 +5,7 @@
 // ================================================
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'bimbelku');
+define('DB_NAME', 'bimbelorion');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHAR', 'utf8mb4');
