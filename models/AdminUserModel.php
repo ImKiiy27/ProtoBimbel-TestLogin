@@ -42,12 +42,12 @@ class AdminUserModel {
         u.is_locked,
         u.attempts,
         u.created_at,
-        g.id   AS guru_id,
-        g.nama AS guru_nama,
+        g.user_id AS guru_id,
+        g.nama    AS guru_nama,
         g.nip,
         g.mapel,
-        s.id   AS siswa_id,
-        s.nama AS siswa_nama,
+        s.user_id AS siswa_id,
+        s.nama    AS siswa_nama,
         s.nis,
         s.kelas
       FROM users u
@@ -63,12 +63,12 @@ class AdminUserModel {
     $stmt = $this->db->prepare("
       SELECT
         u.*,
-        g.id   AS guru_id,
-        g.nama AS guru_nama,
+        g.user_id AS guru_id,
+        g.nama    AS guru_nama,
         g.nip,
         g.mapel,
-        s.id   AS siswa_id,
-        s.nama AS siswa_nama,
+        s.user_id AS siswa_id,
+        s.nama    AS siswa_nama,
         s.nis,
         s.kelas
       FROM users u
@@ -84,8 +84,17 @@ class AdminUserModel {
   public function createUser(array $data): array {
     $this->db->beginTransaction();
     try {
-      $userId = $this->idCounterModel->generateId('users', 'USR');
-      $stmt   = $this->db->prepare("
+      // Generate user ID sesuai role
+      [$tabel, $prefix] = match($data['role']) {
+        'guru'  => ['guru',  'GRU'],
+        'siswa' => ['siswa', 'SSW'],
+        'admin' => ['users', 'ADM'],
+        default => ['users', 'USR'],
+      };
+
+      $userId = $this->idCounterModel->generateId($tabel, $prefix);
+
+      $stmt = $this->db->prepare("
         INSERT INTO users (id, email, password, role, is_locked, attempts)
         VALUES (?, ?, ?, ?, 0, 0)
       ");
@@ -97,35 +106,22 @@ class AdminUserModel {
       ]);
 
       if ($data['role'] === 'guru') {
-        $guruId = $this->idCounterModel->generateId('guru', 'GRU');
-        $nip    = ($data['nip'] ?? '') !== '' ? $data['nip'] : $this->generateGuruNip($userId);
-        $mapel  = ($data['mapel'] ?? '') !== '' ? $data['mapel'] : 'Privat';
-        $stmt = $this->db->prepare("
-          INSERT INTO guru (id, user_id, nip, nama, mapel)
-          VALUES (?, ?, ?, ?, ?)
+        $nip   = ($data['nip']   ?? '') !== '' ? $data['nip']   : $this->generateGuruNip($userId);
+        $mapel = ($data['mapel'] ?? '') !== '' ? $data['mapel'] : 'Privat';
+        $stmt  = $this->db->prepare("
+          INSERT INTO guru (user_id, nip, nama, mapel)
+          VALUES (?, ?, ?, ?)
         ");
-        $stmt->execute([
-          $guruId,
-          $userId,
-          $nip,
-          $data['nama'],
-          $mapel,
-        ]);
+        $stmt->execute([$userId, $nip, $data['nama'], $mapel]);
+
       } elseif ($data['role'] === 'siswa') {
-        $siswaId = $this->idCounterModel->generateId('siswa', 'SSW');
-        $nis     = ($data['nis'] ?? '') !== '' ? $data['nis'] : $this->generateSiswaNis($userId);
-        $kelas   = ($data['kelas'] ?? '') !== '' ? $data['kelas'] : 'Privat';
-        $stmt = $this->db->prepare("
-          INSERT INTO siswa (id, user_id, nis, nama, kelas)
-          VALUES (?, ?, ?, ?, ?)
+        $nis   = ($data['nis']   ?? '') !== '' ? $data['nis']   : $this->generateSiswaNis($userId);
+        $kelas = ($data['kelas'] ?? '') !== '' ? $data['kelas'] : 'Privat';
+        $stmt  = $this->db->prepare("
+          INSERT INTO siswa (user_id, nis, nama, kelas)
+          VALUES (?, ?, ?, ?)
         ");
-        $stmt->execute([
-          $siswaId,
-          $userId,
-          $nis,
-          $data['nama'],
-          $kelas,
-        ]);
+        $stmt->execute([$userId, $nis, $data['nama'], $kelas]);
       }
 
       $this->db->commit();
@@ -167,63 +163,39 @@ class AdminUserModel {
 
       if ($data['role'] === 'guru') {
         if ($current['guru_id']) {
-          $nip   = ($data['nip'] ?? '') !== '' ? $data['nip'] : ($current['nip'] ?? $this->generateGuruNip($userId));
+          $nip   = ($data['nip']   ?? '') !== '' ? $data['nip']   : ($current['nip']   ?? $this->generateGuruNip($userId));
           $mapel = ($data['mapel'] ?? '') !== '' ? $data['mapel'] : ($current['mapel'] ?? 'Privat');
-          $stmt = $this->db->prepare("
+          $stmt  = $this->db->prepare("
             UPDATE guru SET nip = ?, nama = ?, mapel = ?
-            WHERE id = ?
+            WHERE user_id = ?
           ");
-          $stmt->execute([
-            $nip,
-            $data['nama'] ?: ($current['guru_nama'] ?? ''),
-            $mapel,
-            $current['guru_id'],
-          ]);
+          $stmt->execute([$nip, $data['nama'] ?: ($current['guru_nama'] ?? ''), $mapel, $current['guru_id']]);
         } else {
-          $guruId = $this->idCounterModel->generateId('guru', 'GRU');
-          $nip    = ($data['nip'] ?? '') !== '' ? $data['nip'] : $this->generateGuruNip($userId);
-          $mapel  = ($data['mapel'] ?? '') !== '' ? $data['mapel'] : 'Privat';
-          $stmt = $this->db->prepare("
-            INSERT INTO guru (id, user_id, nip, nama, mapel)
-            VALUES (?, ?, ?, ?, ?)
+          $nip   = ($data['nip']   ?? '') !== '' ? $data['nip']   : $this->generateGuruNip($userId);
+          $mapel = ($data['mapel'] ?? '') !== '' ? $data['mapel'] : 'Privat';
+          $stmt  = $this->db->prepare("
+            INSERT INTO guru (user_id, nip, nama, mapel)
+            VALUES (?, ?, ?, ?)
           ");
-          $stmt->execute([
-            $guruId,
-            $userId,
-            $nip,
-            $data['nama'],
-            $mapel,
-          ]);
+          $stmt->execute([$userId, $nip, $data['nama'], $mapel]);
         }
       } elseif ($data['role'] === 'siswa') {
         if ($current['siswa_id']) {
-          $nis   = ($data['nis'] ?? '') !== '' ? $data['nis'] : ($current['nis'] ?? $this->generateSiswaNis($userId));
+          $nis   = ($data['nis']   ?? '') !== '' ? $data['nis']   : ($current['nis']   ?? $this->generateSiswaNis($userId));
           $kelas = ($data['kelas'] ?? '') !== '' ? $data['kelas'] : ($current['kelas'] ?? 'Privat');
-          $stmt = $this->db->prepare("
+          $stmt  = $this->db->prepare("
             UPDATE siswa SET nis = ?, nama = ?, kelas = ?
-            WHERE id = ?
+            WHERE user_id = ?
           ");
-          $stmt->execute([
-            $nis,
-            $data['nama'] ?: ($current['siswa_nama'] ?? ''),
-            $kelas,
-            $current['siswa_id'],
-          ]);
+          $stmt->execute([$nis, $data['nama'] ?: ($current['siswa_nama'] ?? ''), $kelas, $current['siswa_id']]);
         } else {
-          $siswaId = $this->idCounterModel->generateId('siswa', 'SSW');
-          $nis     = ($data['nis'] ?? '') !== '' ? $data['nis'] : $this->generateSiswaNis($userId);
-          $kelas   = ($data['kelas'] ?? '') !== '' ? $data['kelas'] : 'Privat';
-          $stmt = $this->db->prepare("
-            INSERT INTO siswa (id, user_id, nis, nama, kelas)
-            VALUES (?, ?, ?, ?, ?)
+          $nis   = ($data['nis']   ?? '') !== '' ? $data['nis']   : $this->generateSiswaNis($userId);
+          $kelas = ($data['kelas'] ?? '') !== '' ? $data['kelas'] : 'Privat';
+          $stmt  = $this->db->prepare("
+            INSERT INTO siswa (user_id, nis, nama, kelas)
+            VALUES (?, ?, ?, ?)
           ");
-          $stmt->execute([
-            $siswaId,
-            $userId,
-            $nis,
-            $data['nama'],
-            $kelas,
-          ]);
+          $stmt->execute([$userId, $nis, $data['nama'], $kelas]);
         }
       }
 
@@ -267,44 +239,30 @@ class AdminUserModel {
   }
 
   private function hasRelasiGuru(?string $guruId): bool {
-    if (empty($guruId)) {
-      return false;
-    }
-
+    if (empty($guruId)) return false;
     $stmt = $this->db->prepare("SELECT COUNT(*) FROM siswa_mapel WHERE guru_id = ?");
     $stmt->execute([$guruId]);
     return (int)$stmt->fetchColumn() > 0;
   }
 
   private function hasRelasiSiswa(?string $siswaId, ?string $nis): bool {
-    if (empty($siswaId) && empty($nis)) {
-      return false;
-    }
-
+    if (empty($siswaId) && empty($nis)) return false;
     if (!empty($siswaId)) {
       $stmt = $this->db->prepare("SELECT COUNT(*) FROM siswa_mapel WHERE siswa_id = ?");
       $stmt->execute([$siswaId]);
-      if ((int)$stmt->fetchColumn() > 0) {
-        return true;
-      }
+      if ((int)$stmt->fetchColumn() > 0) return true;
     }
-
     if (!empty($nis)) {
       $stmt = $this->db->prepare("SELECT COUNT(*) FROM absensi WHERE nis_siswa = ?");
       $stmt->execute([$nis]);
-      if ((int)$stmt->fetchColumn() > 0) {
-        return true;
-      }
+      if ((int)$stmt->fetchColumn() > 0) return true;
     }
-
     return false;
   }
 
   private function friendlyDuplicateMessage(PDOException $e): string {
     $code = $e->errorInfo[1] ?? null;
-    if ($code === 1062) {
-      return 'Email/NIP/NIS sudah digunakan.';
-    }
+    if ($code === 1062) return 'Email/NIP/NIS sudah digunakan.';
     return $e->getMessage();
   }
 
