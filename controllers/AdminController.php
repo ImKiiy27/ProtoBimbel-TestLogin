@@ -152,8 +152,6 @@ class AdminController {
       'nama'     => $nama,
       'mapel'    => $mapel,
       'kelas'    => $kelas,
-      'nip'      => '', // akan dipertahankan/otomatis jika kosong
-      'nis'      => '',
     ]);
 
     $_SESSION['flash_' . $result['status']] = $result['status'] === 'success'

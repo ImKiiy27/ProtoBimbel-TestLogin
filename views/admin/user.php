@@ -55,17 +55,21 @@ require __DIR__ . '/../layouts/header.php';
             </div>
             <i class="fas fa-user-plus text-primary fs-4"></i>
           </div>
-          <form method="POST" action="index.php?page=admin-user" autocomplete="off">
+          <form method="POST" action="index.php?page=admin-user" autocomplete="off" id="createUserForm">
             <input type="hidden" name="_csrf" value="<?= htmlspecialchars(getCsrfToken()) ?>">
             <input type="hidden" name="action" value="create">
+            <div class="position-absolute opacity-0 pe-none" aria-hidden="true" style="height:0;overflow:hidden;">
+              <input type="text" tabindex="-1" autocomplete="username">
+              <input type="password" tabindex="-1" autocomplete="new-password">
+            </div>
             <div class="row g-3" id="createRoleFields">
               <div class="col-md-6 col-lg-4">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required>
+                <input type="email" name="email" class="form-control" autocomplete="off" autocapitalize="off" spellcheck="false" required>
               </div>
               <div class="col-md-6 col-lg-4">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" minlength="6" required>
+                <input type="password" name="password" class="form-control" minlength="6" autocomplete="new-password" required>
                 <small class="text-muted">Minimal 6 karakter</small>
               </div>
               <div class="col-md-6 col-lg-4">
@@ -249,11 +253,11 @@ require __DIR__ . '/../layouts/header.php';
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Email</label>
-              <input type="email" name="email" id="editEmail" class="form-control" required>
+              <input type="email" name="email" id="editEmail" class="form-control" autocomplete="off" autocapitalize="off" spellcheck="false" required>
             </div>
             <div class="col-md-6">
               <label class="form-label">Password Baru</label>
-              <input type="password" name="password" id="editPassword" class="form-control" minlength="6" placeholder="Kosongkan jika tidak ganti">
+              <input type="password" name="password" id="editPassword" class="form-control" minlength="6" autocomplete="new-password" placeholder="Kosongkan jika tidak ganti">
             </div>
             <div class="col-md-6">
               <label class="form-label">Role</label>
