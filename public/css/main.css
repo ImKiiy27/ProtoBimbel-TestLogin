@@ -250,6 +250,7 @@ section[id], [id^="fitur"], [id^="testimoni"], [id^="kontak"] { scroll-margin-to
 .navbar-brand          { display: flex; align-items: center; gap: 10px; }
 .navbar-brand .logo-icon { width: 40px; height: 40px; font-size: 18px; }
 .navbar-brand .brand-text { font-size: 1.5rem; font-weight: 700; color: #0d6efd; }
+.navbar-toggler { margin-left: auto; }
 
 .nav-link {
   font-weight: 500;
@@ -259,6 +260,27 @@ section[id], [id^="fitur"], [id^="testimoni"], [id^="kontak"] { scroll-margin-to
   transition: all 0.3s ease;
 }
 .nav-link:hover { background: rgba(13, 110, 253, 0.1); color: #0d6efd !important; }
+
+@media (max-width: 991.98px) {
+  .navbar .navbar-collapse {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+
+  .navbar .navbar-nav {
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .navbar .nav-item {
+    width: 100%;
+  }
+
+  .navbar .nav-link {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
 
 /* ------------------------------------------------------------
    5. HERO SECTION (index)

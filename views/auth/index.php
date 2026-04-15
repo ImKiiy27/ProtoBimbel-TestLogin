@@ -13,20 +13,21 @@ require __DIR__ . '/../layouts/header.php';
     <a class="navbar-brand" href="index.php">
       <div class="logo-icon" style="width:40px;height:40px;font-size:18px;"><i class="fas fa-book-open"></i></div>
       <span class="brand-text">Bimbel Orion</span>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
         <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
-        <li class="nav-item ms-3">
+        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
           <button class="theme-toggle" id="themeToggle" style="width:40px;height:40px;font-size:18px;">
             <i class="fas fa-moon"></i>
           </button>
         </li>
-        <li class="nav-item ms-3"><a href="index.php?page=login" class="btn btn-login px-4">Login</a></li>
-        <li class="nav-item ms-2"><a href="index.php?page=pendaftaran" class="btn btn-daftar px-4">Daftar</a></li>
+        <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a href="index.php?page=login" class="btn btn-login px-4">Login</a></li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0"><a href="index.php?page=pendaftaran" class="btn btn-daftar px-4">Daftar</a></li>
       </ul>
     </div>
   </div>
